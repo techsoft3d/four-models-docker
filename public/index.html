@@ -59,11 +59,11 @@
     </style>
 
     <script type="text/javascript">
+        var viewer = null;
         initializeViewer()
 
         async function startViewer() {
 
-            var viewer;
 
             var server = new ServerConnection("https://four-models-docker.techsoft3d.com"); //change to IP of host server
 
