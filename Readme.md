@@ -1,4 +1,4 @@
-# CAD Model Streaming Docker Demo 
+# Four Models
 This repo will walk you through the steps to run a HOOPS Communicator based Linux Streaming Server Docker Container and a companion node-server for static files. 
 
 ## Getting Stated 
@@ -8,10 +8,6 @@ This repo will walk you through the steps to run a HOOPS Communicator based Linu
 1. ```echo <your_github_token> | docker login ghcr.io -u <yourGitHubUserName> --password-stdin```
 2. ```docker pull ghcr.io/techsoft3d/streaming-server:latest```
 3. ```docker pull ghcr.io/techsoft3d/node-server:latest```
-
-## Add your HOOPS License 
-1. Create a file called hoops_license.txt in the root directory of this project
-2. Place your license key string in this file without any quotes
 
 ## Change to use IP of host server (or localhost if running locally)  
 1. Update line 67 of index.html ```var server = new ServerConnection("http://<host_ip>:11182");```
@@ -27,4 +23,4 @@ This repo will walk you through the steps to run a HOOPS Communicator based Linu
 
 ## View template application
 1. Open a browser window and navigate to ```http://localhost:3000``` 
-         
+          
