@@ -61,7 +61,7 @@
     <script type="text/javascript">
         initializeViewer()
 
-        async function startViewer(modelName) {
+        async function startViewer() {
 
             var viewer;
 
@@ -73,7 +73,6 @@
                 model: "_empty",
                 boundingPreviewMode: Communicator.BoundingPreviewMode.None,
                 endpointUri: server._endpointuri,
-                model: modelName,
                 enginePath: 'https://cdn.jsdelivr.net/gh/techsoft3d/hoops-web-viewer@2025.1.0',
                 rendererType: 0
             });
@@ -95,7 +94,7 @@
             ];
 
             try {
-                var viewer = await startViewer(model_name)
+                var viewer = await startViewer()
 
                 var ui = null;
                 var md = new MobileDetect(window.navigator.userAgent);
