@@ -3,7 +3,7 @@ name: Docker Demo on Self-Hosted Runner
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   demo:
