@@ -1,22 +1,61 @@
-name: Docker Demo on Self-Hosted Runner
+name: Docker Demo on Self-Hosted Runner (Main)
 
 on:
   push:
     branches:
       - main
 
+  registry_package:
+    types: [published]
+
+  workflow_dispatch:
+
 jobs:
   demo:
-    runs-on: self-hosted # Runs on your self-hosted runner
+    runs-on: self-hosted
     steps:
+      - name: Determine Trigger Source
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          echo "Triggered by: $EVENT_NAME"
+          if [[ "$EVENT_NAME" == "registry_package" ]]; then
+            echo "Package update detected. Checking tag..."
+            echo "PACKAGE_UPDATE=true" >> $GITHUB_ENV
+          else
+            echo "Code push detected. Skipping package validation."
+          fi
+
+      - name: Extract Package Info (Only if Package Update)
+        if: env.PACKAGE_UPDATE == 'true'
+        env:
+          EVENT_PAYLOAD: ${{ toJson(github.event) }}
+        run: |
+          IMAGE_NAME="ghcr.io/techsoft3d/streaming-server"
+          TARGET_TAG="latest"
+
+          PACKAGE_NAME=$(echo "$EVENT_PAYLOAD" | jq -r '.registry_package.name')
+          PACKAGE_TAG=$(echo "$EVENT_PAYLOAD" | jq -r '.registry_package.package_version.container_metadata.tag')
+
+          echo "Package Name: $PACKAGE_NAME"
+          echo "Package Tag: $PACKAGE_TAG"
+
+          if [[ "$PACKAGE_NAME" == "streaming-server" && "$PACKAGE_TAG" == "$TARGET_TAG" ]]; then
+            echo "Triggering build for main..."
+          else
+            echo "Not the latest tag update. Exiting."
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: Create hoops_license.txt
         run: |
           echo "${{ secrets.HOOPS_LICENSE }}" | base64 --decode > hoops_license.txt
-          ls -l hoops_license.txt  # Verify file exists
-          cat hoops_license.txt  # Debugging: Check file content (remove in production)
+          ls -l hoops_license.txt
 
       - name: Inject Host IP into index.html
         run: |
@@ -24,8 +63,6 @@ jobs:
 
       - name: Write SSL certificates to files
         run: |
-          pwd  # Print the current working directory
-          ls -la  # List files before creating certs
           mkdir -p certs
           echo "${{ secrets.SSL_CERT }}" > certs/server.crt
           echo "${{ secrets.SSL_KEY }}" > certs/server.key
@@ -33,7 +70,6 @@ jobs:
 
       - name: Verify SSL Certificates
         run: |
-          echo "🔍 Checking SSL certificate files..."
           if [ ! -s certs/server.crt ] || [ ! -s certs/server.key ]; then
             echo "❌ Error: SSL certificate files are missing or empty!"
             exit 1
@@ -51,6 +87,7 @@ jobs:
           docker pull ghcr.io/techsoft3d/streaming-server:latest
           docker pull ghcr.io/techsoft3d/node-server:latest
           docker pull ghcr.io/techsoft3d/proxy-server:latest
+
       - name: Build and Run Docker Containers
         run: |
           docker-compose up -d --force-recreate
