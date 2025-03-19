@@ -54,22 +54,22 @@ var config = {
 
     // Determines the full-chain SSL certificate file. This must be set when enabling any
     // component for SSL.
-    sslCertificateFile: null,  //"/opt/hoops_communicator/certs/server.crt",
+    sslCertificateFile: "/opt/hoops_communicator/certs/server.crt",
 
     // Determines the SSL private-key file. This must be set when enabling any component for SSL.
-    sslPrivateKeyFile: null,  //"/opt/hoops_communicator/certs/server.key",
+    sslPrivateKeyFile: "/opt/hoops_communicator/certs/server.key",
 
     // Path to the SSL certificate authority that will be used to validate the certificate during liveliness requests
-    sslCertificateAuthorityPath: null,  //"/opt/hoops_communicator/certs/ca.crt",
+    sslCertificateAuthorityPath: "/opt/hoops_communicator/certs/ca.crt",
 
     // Determines if SSL is enabled for the file-server.
-    sslEnableFileServer: false,
+    sslEnableFileServer: true,
 
     // Determines if SSL is enabled for the spawn-server.
-    sslEnableSpawnServer: false,
+    sslEnableSpawnServer: true,
 
     // Determines if SSL is enabled for the spawned stream-cache servers.
-    sslEnableScServer: false,
+    sslEnableScServer: true,
 
     // Disables certificate revocation checks for spawned stream-cache servers.
     // Only relevant for Windows liveliness requests
