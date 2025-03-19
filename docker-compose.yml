@@ -3,7 +3,7 @@ version: '3'
 services:
   hoops-staging:
     image: ghcr.io/techsoft3d/streaming-server:latest
-    container_name: hoops
+    container_name: hoops-staging
     restart: unless-stopped
     ports:
       - "11182:11182"
@@ -18,7 +18,7 @@ services:
 
   app-staging:
     image: ghcr.io/techsoft3d/node-server:latest
-    container_name: file-server
+    container_name: file-server-staging
     restart: unless-stopped
     ports:
       - "3001:3001"  #change to whatever port you want files to be served from, but default is 3000
@@ -31,7 +31,7 @@ services:
 
   proxy-server-staging:
     image: ghcr.io/techsoft3d/proxy-server:latest  
-    container_name: proxy-server
+    container_name: proxy-server-staging
     restart: unless-stopped
     ports:
       - "443:443"
