@@ -6,8 +6,8 @@ services:
     container_name: hoops-staging
     restart: unless-stopped
     ports:
-      - "11182:11182"
-      - "11000-11034:11000-11034"
+      - "11183:11183"
+      - "11035-11070:11035-11070"
     volumes:
       - "./patches/server_config.js:/opt/hoops_communicator/quick_start/server_config.js"
       - "./patches/Utils.js:/opt/hoops_communicator/server/node/lib/Utils.js"
