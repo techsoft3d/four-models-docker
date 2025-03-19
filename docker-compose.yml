@@ -41,8 +41,8 @@ services:
       - "443:443"
     depends_on:
       - hoops
-    networks:
-      - shared-network 
+    # networks:
+    #   - shared-network 
 # networks:
 #   shared-network:
 #     external: true
