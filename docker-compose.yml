@@ -29,11 +29,11 @@ services:
     depends_on:
       - hoops-staging
 
-  proxy-server-staging:
-    image: ghcr.io/techsoft3d/proxy-server:latest  
-    container_name: proxy-server-staging
-    restart: unless-stopped
-    ports:
-      - "443:443"
-    depends_on:
-      - hoops-staging
+  # proxy-server-staging:
+  #   image: ghcr.io/techsoft3d/proxy-server:latest  
+  #   container_name: proxy-server-staging
+  #   restart: unless-stopped
+  #   ports:
+  #     - "443:443"
+  #   depends_on:
+  #     - hoops-staging
