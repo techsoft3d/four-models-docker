@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  hoops:
+  hoops-staging:
     image: ghcr.io/techsoft3d/streaming-server:latest
     container_name: hoops
     restart: unless-stopped
@@ -16,20 +16,20 @@ services:
     environment:
       - HOST_IP=${HOST_IP}
 
-  app:
+  app-staging:
     image: ghcr.io/techsoft3d/node-server:latest
     container_name: file-server
     restart: unless-stopped
     ports:
-      - "3000:3000"  #change to whatever port you want files to be served from, but default is 3000
+      - "3001:3001"  #change to whatever port you want files to be served from, but default is 3000
     environment:
-      - PORT=3000  # This sets the PORT dynamically
+      - PORT=3001  # This sets the PORT dynamically
     volumes:
       - ./public:/app/public  # Mounts local "public" folder into the container
     depends_on:
       - hoops
 
-  proxy-server:
+  proxy-server-staging:
     image: ghcr.io/techsoft3d/proxy-server:latest  
     container_name: proxy-server
     restart: unless-stopped
