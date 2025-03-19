@@ -16,7 +16,7 @@ services:
     environment:
       - HOST_IP=${HOST_IP}
 
-  app-staging:
+  file-server-staging:
     image: ghcr.io/techsoft3d/node-server:latest
     container_name: file-server-staging
     restart: unless-stopped

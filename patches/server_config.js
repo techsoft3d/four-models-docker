@@ -238,7 +238,7 @@ var config = {
     ////////////////////////////////////////////////////////////////////////////////
 
     // The port used by the http file-server. Set to null or 0 to disable the http server
-    fileServerPort: 11180,
+    fileServerPort: 11181,
 
     // Static directories used by the http file-server for serving content. Any relative directories are relative to 'communicatorDir'
     // Note that SCS models are delivered by the http server, thus scs paths are in here
