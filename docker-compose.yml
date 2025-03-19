@@ -15,6 +15,8 @@ services:
       - "./hoops_license.txt:/opt/hoops_communicator/hoops_license.txt"
     environment:
       - HOST_IP=${HOST_IP}
+    networks:
+      - shared-network 
 
   app:
     image: ghcr.io/techsoft3d/node-server:latest
@@ -28,6 +30,8 @@ services:
       - ./public:/app/public  # Mounts local "public" folder into the container
     depends_on:
       - hoops
+    networks:
+      - shared-network 
 
   proxy-server:
     image: ghcr.io/techsoft3d/proxy-server:latest  
@@ -37,3 +41,8 @@ services:
       - "443:443"
     depends_on:
       - hoops
+    networks:
+      - shared-network 
+networks:
+  shared-network:
+    external: true
