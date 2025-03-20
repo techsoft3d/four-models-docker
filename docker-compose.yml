@@ -27,8 +27,8 @@ services:
       - "3001:3001"  #change to whatever port you want files to be served from, but default is 3000
     environment:
       - PORT=3001  # This sets the PORT dynamically
-    # volumes:
-    #   - ./public-staging:/app/public  # Mounts local "public" folder into the container
+    volumes:
+      - ./public-staging:/app/public  # Mounts local "public" folder into the container
     depends_on:
       - hoops-staging
     networks:

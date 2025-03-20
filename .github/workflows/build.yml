@@ -14,11 +14,12 @@ jobs:
         with:
           ref: staging
       
-      - name: Copy public-staging to Running Container
-        run: |
-          CONTAINER_ID=$(docker ps -qf "name=staging_project")
-          docker cp public-staging/. $CONTAINER_ID:/app/public
+      - name: List Directory Contents
+        run: ls -la public-staging 
 
+      - name: Set permissions for public-staging
+        run: sudo chmod -R 777 public-staging
+      
       - name: Create hoops_license.txt
         run: |
           echo "${{ secrets.HOOPS_LICENSE }}" | base64 --decode > hoops_license.txt
