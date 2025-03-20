@@ -13,6 +13,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: staging
+      
+      - name: Ensure public-staging Exists
+        run: mkdir -p public-staging && cp -r public/* public-staging/
 
       - name: Create hoops_license.txt
         run: |
