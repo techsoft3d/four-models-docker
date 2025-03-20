@@ -51,7 +51,7 @@ jobs:
       - name: Pull Latest Docker Images
         run: |
           docker pull ghcr.io/techsoft3d/streaming-server:staging 
-          docker pull ghcr.io/techsoft3d/node-server:latest
+          docker pull ghcr.io/techsoft3d/node-server:staging
         
       - name: Build and Run Docker Containers
         run: |
