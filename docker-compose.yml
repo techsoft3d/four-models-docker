@@ -17,7 +17,7 @@ services:
       - HOST_IP=${HOST_IP}
 
   file-server-staging:
-    image: ghcr.io/techsoft3d/node-server:latest
+    image: ghcr.io/techsoft3d/node-server:staging
     container_name: file-server-staging
     restart: unless-stopped
     ports:
