@@ -26,7 +26,7 @@ services:
       - "3000:3000"  #change to whatever port you want files to be served from, but default is 3000
     environment:
       - PORT=3000  # This sets the PORT dynamically
-    volumes:
+    volumes: 
       - ./public:/app/public  # Mounts local "public" folder into the container
     depends_on:
       - hoops
