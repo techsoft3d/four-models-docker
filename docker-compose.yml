@@ -2,7 +2,7 @@ version: '3'
 
 services:
   hoops-staging:
-    image: ghcr.io/techsoft3d/streaming-server:latest
+    image: ghcr.io/techsoft3d/streaming-server:staging
     container_name: hoops-staging
     restart: unless-stopped
     ports:
