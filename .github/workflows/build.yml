@@ -53,4 +53,4 @@ jobs:
         
       - name: Build and Run Docker Containers
         run: |
-          docker-compose up -d --force-recreate
+          docker-compose -p staging_project up -d --force-recreate
