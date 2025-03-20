@@ -20,9 +20,9 @@ jobs:
           ls -l hoops_license.txt  # Verify file exists
           cat hoops_license.txt  # Debugging: Check file content (remove in production)
 
-      # - name: Inject Host IP into index.html
-      #   run: |
-      #     sed -i 's|<head>|<head>\n<script>window.HOST_IP="${{ secrets.HOST_IP }}";</script>|' ./public/index.html
+      - name: Inject Host IP into index.html
+        run: |
+          sed -i 's|<head>|<head>\n<script>window.HOST_IP="${{ secrets.HOST_IP }}";</script>|' ./public/index.html
 
       - name: Write SSL certificates to files
         run: |
