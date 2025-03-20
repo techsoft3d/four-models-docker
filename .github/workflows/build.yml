@@ -14,9 +14,10 @@ jobs:
         with:
           ref: staging
       
-      - name: Ensure public-staging Exists
+      - name: Copy public-staging to Running Container
         run: |
-          mkdir -p public-staging 
+          CONTAINER_ID=$(docker ps -qf "name=staging_project")
+          docker cp public-staging/. $CONTAINER_ID:/app/public
 
       - name: Create hoops_license.txt
         run: |
