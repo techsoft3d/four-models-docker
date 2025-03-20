@@ -9,15 +9,12 @@ services:
       - "11183:11183"
       - "11035-11070:11035-11070"
     volumes:
-      - "./patches-staging/server_config.js:/opt/hoops_communicator/quick_start/server_config.js"
-      - "./patches-staging/Utils.js:/opt/hoops_communicator/server/node/lib/Utils.js"
-      - "./models-staging:/opt/hoops_communicator/models"
+      - "./patches/server_config.js:/opt/hoops_communicator/quick_start/server_config.js"
+      - "./patches/Utils.js:/opt/hoops_communicator/server/node/lib/Utils.js"
+      - "./models:/opt/hoops_communicator/models"
       - "./hoops_license.txt:/opt/hoops_communicator/hoops_license.txt"
     environment:
       - HOST_IP=${HOST_IP}
-
-    networks:
-          - shared-network
 
   file-server-staging:
     image: ghcr.io/techsoft3d/node-server:staging
@@ -31,9 +28,12 @@ services:
       - ./public:/app/public  # Mounts local "public" folder into the container
     depends_on:
       - hoops-staging
-    networks:
-      - shared-network
 
-networks:
-  shared-network:
-    external: true
+  # proxy-server-staging:
+  #   image: ghcr.io/techsoft3d/proxy-server:latest  
+  #   container_name: proxy-server-staging
+  #   restart: unless-stopped
+  #   ports:
+  #     - "443:443"
+  #   depends_on:
+  #     - hoops-staging
