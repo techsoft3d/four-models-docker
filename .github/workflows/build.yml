@@ -16,7 +16,7 @@ jobs:
       
       - name: Ensure public-staging Exists
         run: |
-          mkdir -p public-staging && cp -r public/* public-staging/
+          mkdir -p public-staging && cp -r public-staging /* public-staging/
 
       - name: Create hoops_license.txt
         run: |
