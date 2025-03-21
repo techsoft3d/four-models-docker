@@ -32,7 +32,8 @@ services:
 volumes:
   public-staging:
     external: true
-
+  models:
+    external: true
   # proxy-server-staging:
   #   image: ghcr.io/techsoft3d/proxy-server:latest  
   #   container_name: proxy-server-staging
