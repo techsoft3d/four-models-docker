@@ -60,7 +60,8 @@ jobs:
             -v public-staging:/volume \
             -v $(pwd)/public-staging:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
-          docker run --rm \
+          
+            docker run --rm \
             -v models:/volume \
             -v $(pwd)/models:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
