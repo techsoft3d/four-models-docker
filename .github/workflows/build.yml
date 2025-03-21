@@ -61,7 +61,14 @@ jobs:
             -v $(pwd)/public:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
   
-    
+          docker run --rm \
+            -v patches:/volume \
+            -v $(pwd)/public:/backup \
+            alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
+          docker run --rm \
+            -v models:/volume \
+            -v $(pwd)/public:/backup \
+            alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
       - name: Build and Run Docker Containers
         run: |
           docker-compose -p main_project up -d --force-recreate
