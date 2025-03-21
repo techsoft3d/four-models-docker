@@ -63,11 +63,11 @@ jobs:
   
           docker run --rm \
             -v patches:/volume \
-            -v $(pwd)/public:/backup \
+            -v $(pwd)/patches:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
           docker run --rm \
             -v models:/volume \
-            -v $(pwd)/public:/backup \
+            -v $(pwd)/models:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
       - name: Build and Run Docker Containers
         run: |
