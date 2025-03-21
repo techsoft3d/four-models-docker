@@ -54,13 +54,13 @@ jobs:
           docker pull ghcr.io/techsoft3d/node-server:latest
           docker pull ghcr.io/techsoft3d/proxy-server:latest
       
-      - name: Copy `./public` into External Docker Volume
+      - name: Copy `./public` into External Docker Volume (Using Temporary Container)
         run: |
-          PUBLIC_VOLUME_PATH=$(docker volume inspect public-staging --format '{{ .Mountpoint }}')
-          echo "Copying files to volume: $PUBLIC_VOLUME_PATH"
-          sudo cp -r ./public/* "$PUBLIC_VOLUME_PATH/"
-          sudo chown -R 1000:1000 "$PUBLIC_VOLUME_PATH/"  # Adjust ownership if necessary
-          ls -la "$PUBLIC_VOLUME_PATH/"
+          docker run --rm \
+            -v public:/volume \
+            -v $(pwd)/public:/backup \
+            alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
+  
     
       - name: Build and Run Docker Containers
         run: |
