@@ -53,6 +53,15 @@ jobs:
           docker pull ghcr.io/techsoft3d/streaming-server:latest
           docker pull ghcr.io/techsoft3d/node-server:latest
           docker pull ghcr.io/techsoft3d/proxy-server:latest
+      
+      - name: Copy `./public` into External Docker Volume
+        run: |
+          PUBLIC_VOLUME_PATH=$(docker volume inspect public-staging --format '{{ .Mountpoint }}')
+          echo "Copying files to volume: $PUBLIC_VOLUME_PATH"
+          sudo cp -r ./public/* "$PUBLIC_VOLUME_PATH/"
+          sudo chown -R 1000:1000 "$PUBLIC_VOLUME_PATH/"  # Adjust ownership if necessary
+          ls -la "$PUBLIC_VOLUME_PATH/"
+    
       - name: Build and Run Docker Containers
         run: |
           docker-compose -p main_project up -d --force-recreate
