@@ -25,7 +25,7 @@ services:
     environment:
       - PORT=3001  # This sets the PORT dynamically
     volumes:
-      - ./public-staging:/app/public-staging  # Mounts local "public" folder into the container
+      - public-staging:/app/public-staging  # Mounts local "public" folder into the container
     depends_on:
       - hoops-staging
 
