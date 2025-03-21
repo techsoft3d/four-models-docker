@@ -27,7 +27,7 @@ services:
     environment:
       - PORT=3000  # This sets the PORT dynamically
     volumes: 
-      - ./public:/app/public  # Mounts local "public" folder into the container
+      - public:/app/public  # Mounts local "public" folder into the container
     depends_on:
       - hoops
     networks:
