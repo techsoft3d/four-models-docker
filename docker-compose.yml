@@ -38,6 +38,10 @@ volumes:
     external: true
   models:
     external: true
+
+networks:
+  shared-network:
+    external: true
   # proxy-server-staging:
   #   image: ghcr.io/techsoft3d/proxy-server:latest  
   #   container_name: proxy-server-staging
