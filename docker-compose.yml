@@ -13,17 +13,19 @@ services:
       - "./patches-staging/Utils.js:/opt/hoops_communicator/server/node/lib/Utils.js"
       - "models:/opt/hoops_communicator/models"
       - "./hoops_license.txt:/opt/hoops_communicator/hoops_license.txt"
+      - public-staging:/opt/public-staging  # Shared volume
     environment:
       - HOST_IP=${HOST_IP}
     networks:
       - shared-network 
+    entrypoint: ["/bin/sh", "-c", "mkdir -p /opt/public-staging/hoops && cp /opt/hoops_communicator/web_viewer/deprecated/src/js/hoops_web_viewer.js /opt/public-staging/hoops/ && cp /opt/hoops_communicator/web_viewer/deprecated/src/js/engine-wasm.js /opt/public-staging/hoops/ && exec /entrypoint.sh"]
 
   file-server-staging:
     image: ghcr.io/techsoft3d/node-server:staging
     container_name: file-server-staging
     restart: unless-stopped
     ports:
-      - "3001:3001"  #change to whatever port you want files to be served from, but default is 3000
+      - "3001:3001"  # Change to whatever port you want files to be served from, but default is 3000
     environment:
       - PORT=3001  # This sets the PORT dynamically
     volumes:
