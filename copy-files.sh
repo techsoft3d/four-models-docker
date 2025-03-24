@@ -9,4 +9,4 @@ cp /opt/hoops_communicator/web_viewer/deprecated/src/js/engine-asmjs.js /opt/pub
 cp /opt/hoops_communicator/web_viewer/deprecated/src/js/engine.wasm /opt/public-staging/hoops/
 
 echo "Copy complete. Starting main container process..."
-exec /bin/sh  # Change this if a different command is needed
+exec ../../3rd_party/node/bin/node --expose-gc ./lib/Startup.js --config-file ../../quick_start/server_config.js
