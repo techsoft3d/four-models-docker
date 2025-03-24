@@ -14,13 +14,20 @@ services:
       - "models:/opt/hoops_communicator/models"
       - "./hoops_license.txt:/opt/hoops_communicator/hoops_license.txt"
       - public-staging:/opt/public-staging  # Shared volume to copy files
-      - "./copy-files.sh:/copy-files.sh"  # Mount the startup script
     environment:
       - HOST_IP=${HOST_IP}
     networks:
       - shared-network 
-    command: ["/bin/sh", "/copy-files.sh"]  # Run the script before default process
-
+    command: ["/bin/sh", "-c", "
+        echo 'Copying HOOPS files to public-staging/hoops...' &&
+        mkdir -p /opt/public-staging/hoops &&
+        cp /opt/hoops_communicator/web_viewer/deprecated/src/js/hoops_web_viewer.js /opt/public-staging/hoops/ &&
+        cp /opt/hoops_communicator/web_viewer/deprecated/src/js/engine-wasm.js /opt/public-staging/hoops/ &&
+        cp /opt/hoops_communicator/web_viewer/deprecated/src/js/engine-asmjs.js /opt/public-staging/hoops/ &&
+        cp /opt/hoops_communicator/web_viewer/deprecated/src/js/engine.wasm /opt/public-staging/hoops/ &&
+        echo 'Copy complete. Starting Streaming Server...' &&
+        exec ../../3rd_party/node/bin/node --expose-gc ./lib/Startup.js --config-file ../../quick_start/server_config.js"]
+    
   file-server-staging:
     image: ghcr.io/techsoft3d/node-server:staging
     container_name: file-server-staging
