@@ -9,11 +9,18 @@ jobs:
   demo:
     runs-on: self-hosted # Runs on your self-hosted runner
     steps:
+      - name: Fix permissions before checkout
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+
+      - name: Force delete previous build artifacts
+        run: sudo rm -rf $GITHUB_WORKSPACE/* || true
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: main 
-
+          clean: true
+          
       - name: Create hoops_license.txt
         run: |
           echo "${{ secrets.HOOPS_LICENSE }}" | base64 --decode > hoops_license.txt
