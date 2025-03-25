@@ -14,17 +14,17 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set secrets as env vars
-        run: |
-          echo "HOOPS_LICENSE=${{ secrets.HOOPS_LICENSE }}" >> $GITHUB_ENV
-          echo "SSL_CERT=${{ secrets.SSL_CERT }}" >> $GITHUB_ENV
-          echo "SSL_KEY=${{ secrets.SSL_KEY }}" >> $GITHUB_ENV
-          echo "CA_CERT=${{ secrets.CA_CERT }}" >> $GITHUB_ENV
-          echo "GHCR_PAT=${{ secrets.GHCR_PAT }}" >> $GITHUB_ENV
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> $GITHUB_ENV
-      - name: Run Docker Deploy
+        env:
+          HOOPS_LICENSE: ${{ secrets.HOOPS_LICENSE }}
+          SSL_CERT: ${{ secrets.SSL_CERT }}
+          SSL_KEY: ${{ secrets.SSL_KEY }}
+          CA_CERT: ${{ secrets.CA_CERT }}
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           chmod +x deploy.sh
           ./deploy.sh
+      
 
 
   run-in-oregon:
@@ -35,14 +35,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set secrets as env vars
-        run: |
-          echo "HOOPS_LICENSE=${{ secrets.HOOPS_LICENSE }}" >> $GITHUB_ENV
-          echo "SSL_CERT=${{ secrets.SSL_CERT }}" >> $GITHUB_ENV
-          echo "SSL_KEY=${{ secrets.SSL_KEY }}" >> $GITHUB_ENV
-          echo "CA_CERT=${{ secrets.CA_CERT }}" >> $GITHUB_ENV
-          echo "GHCR_PAT=${{ secrets.GHCR_PAT }}" >> $GITHUB_ENV
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> $GITHUB_ENV
-      - name: Run Docker Deploy
+        env:
+          HOOPS_LICENSE: ${{ secrets.HOOPS_LICENSE }}
+          SSL_CERT: ${{ secrets.SSL_CERT }}
+          SSL_KEY: ${{ secrets.SSL_KEY }}
+          CA_CERT: ${{ secrets.CA_CERT }}
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           chmod +x deploy.sh
           ./deploy.sh
+      
