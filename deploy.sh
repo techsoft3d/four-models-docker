@@ -1,85 +1,47 @@
 #!/bin/bash
 set -e
 
-# All the steps you previously had in the `build.yml` go here
-# For example:
-echo "Setting up workspace..."
+echo "🚀 Setting up workspace..."
 sudo chown -R $USER:$USER $GITHUB_WORKSPACE
 
-name: Docker Demo on Self-Hosted Runner
+echo "🧹 Deleting previous artifacts..."
+sudo rm -rf $GITHUB_WORKSPACE/* || true
 
-on:
-  push:
-    branches:
-      - staging
+echo "📜 Writing hoops_license.txt..."
+echo "${HOOPS_LICENSE}" | base64 --decode > hoops_license.txt
+ls -l hoops_license.txt
+cat hoops_license.txt
 
-jobs:
-  demo:
-    runs-on: self-hosted # Runs on your self-hosted runner
-    steps:
+echo "🔐 Writing SSL certs..."
+mkdir -p certs
+echo "${SSL_CERT}" > certs/server.crt
+echo "${SSL_KEY}" > certs/server.key
+echo "${CA_CERT}" > certs/ca.crt
 
-      - name: Fix permissions before checkout
-        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+echo "🔍 Verifying SSL certs..."
+if [ ! -s certs/server.crt ] || [ ! -s certs/server.key ]; then
+  echo "❌ SSL certs missing!"
+  exit 1
+fi
+ls -la certs/
 
-      - name: Force delete previous build artifacts
-        run: sudo rm -rf $GITHUB_WORKSPACE/* || true
+echo "📦 Logging into GitHub Packages..."
+echo "${GHCR_PAT}" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          ref: staging  
-          clean: true
+echo "🧹 Pruning Docker images..."
+docker image prune -af
 
-      - name: Create hoops_license.txt
-        run: |
-          echo "${{ secrets.HOOPS_LICENSE }}" | base64 --decode > hoops_license.txt
-          ls -l hoops_license.txt  # Verify file exists
-          cat hoops_license.txt  # Debugging: Check file content (remove in production)
+echo "⬇️ Pulling latest Docker images..."
+docker pull ghcr.io/techsoft3d/streaming-server:staging
+docker pull ghcr.io/techsoft3d/node-server:staging
 
-      # - name: Inject Host IP into index.html
-      #   run: |
-      #     sed -i 's|<head>|<head>\n<script>window.HOST_IP="${{ secrets.HOST_IP }}";</script>|' ./public/index.html
+echo "📁 Copying public-staging into Docker volume..."
+docker run --rm \
+  -v public-staging:/volume \
+  -v "$(pwd)/public-staging:/backup" \
+  alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
 
-      - name: Write SSL certificates to files
-        run: |
-          pwd  # Print the current working directory
-          ls -la  # List files before creating certs
-          mkdir -p certs
-          echo "${{ secrets.SSL_CERT }}" > certs/server.crt
-          echo "${{ secrets.SSL_KEY }}" > certs/server.key
-          echo "${{ secrets.CA_CERT }}" > certs/ca.crt
+echo "🚢 Running docker-compose..."
+docker-compose -p staging_project up -d --force-recreate
 
-      - name: Verify SSL Certificates
-        run: |
-          echo "🔍 Checking SSL certificate files..."
-          if [ ! -s certs/server.crt ] || [ ! -s certs/server.key ]; then
-            echo "❌ Error: SSL certificate files are missing or empty!"
-            exit 1
-          fi
-          ls -la certs/
-
-      - name: Set Environment Variable for Docker
-        run: echo "HOST_IP=${{ secrets.HOST_IP }}" >> $GITHUB_ENV
-
-      - name: Login to GitHub Packages
-        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Remove unused Docker images
-        run: docker image prune -af
-      
-      - name: Pull Latest Docker Images
-        run: |
-          docker pull ghcr.io/techsoft3d/streaming-server:staging 
-          docker pull ghcr.io/techsoft3d/node-server:staging
-        
-
-      - name: Copy `./public-staging` into External Docker Volume (Using Temporary Container)
-        run: |
-          docker run --rm \
-            -v public-staging:/volume \
-            -v $(pwd)/public-staging:/backup \
-            alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
-          
-      - name: Build and Run Docker Containers
-        run: |
-          docker-compose -p staging_project up -d --force-recreate
+echo "✅ Deployment finished!"
