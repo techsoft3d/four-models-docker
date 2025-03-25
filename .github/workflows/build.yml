@@ -77,23 +77,8 @@ jobs:
             -v $(pwd)/models:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
 
-      - name: Start Hoops Container (Temporary)
-        run: |
-          docker run -d --name hoops_temp ghcr.io/techsoft3d/hoops:latest
-          sleep 5  # Give it a few seconds to fully start
+    
 
-      - name: Copy Files from Hoops to Public Volume
+      - name: Build and Run Docker Containers
         run: |
-          docker run --rm \
-            --volumes-from hoops_temp \
-            -v public:/destination \
-            alpine sh -c "cp -r /path/in/hoops/* /destination/ && ls -la /destination/"
-
-      - name: Stop and Remove Temporary Hoops Container
-        run: |
-          docker stop hoops_temp
-          docker rm hoops_temp
-
-            - name: Build and Run Docker Containers
-              run: |
           docker-compose -p main_project up -d --force-recreate
