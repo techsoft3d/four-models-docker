@@ -10,12 +10,22 @@ jobs:
     name: Run on Paris Runner
     runs-on: [self-hosted, paris]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Run Docker Deploy
-        run: ./deploy.sh
+        run: |
+          chmod +x deploy.sh
+          ./deploy.sh
 
   run-in-oregon:
     name: Run on Oregon Runner
     runs-on: [self-hosted, oregon]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Run Docker Deploy
-        run: ./deploy.sh
+        run: |
+          chmod +x deploy.sh
+          ./deploy.sh
