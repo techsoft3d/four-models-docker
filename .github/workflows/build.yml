@@ -5,8 +5,7 @@ on:
     branches:
       - staging
   repository_dispatch:
-    types: 
-      - manual-trigger-staging
+    types: [manual-trigger-staging]
 jobs:
   run-in-paris:
     name: Run on Paris Runner
@@ -21,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: staging  
+          ref: staging
           clean: true
 
       - name: Create hoops_license.txt
