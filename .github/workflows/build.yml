@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - staging
-
-
+  repository_dispatch:
+    types: [manual-trigger]
 jobs:
   run-in-paris:
     name: Run on Paris Runner
