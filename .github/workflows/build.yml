@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - staging
-  repository_dispatch:
-    types: [manual-trigger-staging]
+
+
 jobs:
   run-in-paris:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/staging' || github.event_name == 'repository_dispatch' && github.event.action == 'manual-trigger-staging'
     name: Run on Paris Runner
     runs-on: [self-hosted, paris]
     steps:
@@ -21,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: staging
+          ref: staging  
           clean: true
 
       - name: Create hoops_license.txt
@@ -80,8 +79,6 @@ jobs:
 
 
   run-in-oregon:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/staging' || github.event_name == 'repository_dispatch' && github.event.action == 'manual-trigger-staging'
-
     name: Run on Oregon Runner
     runs-on: [self-hosted, oregon]
     steps:
