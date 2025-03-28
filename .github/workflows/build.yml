@@ -5,7 +5,7 @@ on:
     branches:
       - staging
   repository_dispatch:
-    types: [manual-trigger]
+    types: [manual-trigger-staging]
 jobs:
   run-in-paris:
     name: Run on Paris Runner
