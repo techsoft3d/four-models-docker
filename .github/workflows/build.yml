@@ -5,7 +5,6 @@ on:
     branches:
       - staging
 
-
 jobs:
   run-in-paris:
     name: Run on Paris Runner
@@ -20,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: staging  
+          ref: staging
           clean: true
 
       - name: Create hoops_license.txt
@@ -59,12 +58,11 @@ jobs:
 
       - name: Remove unused Docker images
         run: docker image prune -af
-      
+
       - name: Pull Latest Docker Images
         run: |
           docker pull ghcr.io/techsoft3d/streaming-server:staging 
           docker pull ghcr.io/techsoft3d/node-server:staging
-        
 
       - name: Copy `./public-staging` into External Docker Volume (Using Temporary Container)
         run: |
@@ -72,17 +70,15 @@ jobs:
             -v public-staging:/volume \
             -v $(pwd)/public-staging:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
-          
+
       - name: Build and Run Docker Containers
         run: |
           docker-compose -p staging_project up -d --force-recreate
-
 
   run-in-oregon:
     name: Run on Oregon Runner
     runs-on: [self-hosted, oregon]
     steps:
-
       - name: Fix permissions before checkout
         run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE
 
@@ -92,7 +88,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: staging  
+          ref: staging
           clean: true
 
       - name: Create hoops_license.txt
@@ -131,12 +127,11 @@ jobs:
 
       - name: Remove unused Docker images
         run: docker image prune -af
-      
+
       - name: Pull Latest Docker Images
         run: |
           docker pull ghcr.io/techsoft3d/streaming-server:staging 
           docker pull ghcr.io/techsoft3d/node-server:staging
-        
 
       - name: Copy `./public-staging` into External Docker Volume (Using Temporary Container)
         run: |
@@ -144,8 +139,7 @@ jobs:
             -v public-staging:/volume \
             -v $(pwd)/public-staging:/backup \
             alpine sh -c "cp -r /backup/* /volume/ && ls -la /volume/"
-          
+
       - name: Build and Run Docker Containers
         run: |
           docker-compose -p staging_project up -d --force-recreate
-    
